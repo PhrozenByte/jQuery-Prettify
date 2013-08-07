@@ -1,5 +1,5 @@
-jQuery-Prettify
-===============
+jQuery-Prettify 1.3
+===================
 Use google-code-prettify to highlight sourecode with jQuery
 
 Usage
