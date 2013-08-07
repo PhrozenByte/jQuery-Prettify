@@ -4,7 +4,7 @@ Use google-code-prettify to highlight sourecode with jQuery
 
 Usage
 -----
-Just download the sourcecode, upload the file to your webspace and load it. Obviously [jQuery](http://jquery.com/) and [google-code-prettify](https://code.google.com/p/google-code-prettify/) is required and must be loaded, too.
+Just download the sourcecode, upload the file to your webspace and load it. Obviously [jQuery](http://jquery.com/) and [google-code-prettify](https://code.google.com/p/google-code-prettify/) is required and must be loaded, too. The same applies to [jQuery-XPath](https://github.com/PhrozenByte/jQuery-XPath).
 ```html
 <script type="text/javascript" src="js/jquery.prettify.js"></script>
 ```
@@ -15,7 +15,7 @@ Insert your sourcecode as follows:
   <pre>Sourecode here</pre>
 </div>
 ```
-All elements with the ```pretify``` CSS class will be prettified automatically, so you don't have to do anything. If you wan't to prettify another element (or an element you've added to the DOM later), just call ```.prettify()```.
+All elements with the ```prettify``` CSS class will be prettified automatically, so you don't have to do anything. If you wan't to prettify another element (or an element you've added to the DOM later), just call ```.prettify()```.
 
 ```.prettify()``` accepts an options object as the first parameter and an callback function (same as the callback option) as second parameter. You can use HTML ```data``` attributes to set options, too (e.g. ```data-linenums="false"``` to disable line numbering). The following options are available:
 * ```progress```: If you want to display a progress bar while jQuery-Prettify prettifies your sourcecode, pass a jQuery selector (e.g. ```.progress```) here.
