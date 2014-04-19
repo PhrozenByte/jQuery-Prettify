@@ -648,7 +648,7 @@
 /**
  * Auto-pretiffy all elements with the .prettify class
  */
-jQuery(function() {
+jQuery(document).ready(function($) {
 	// magic prettify css class
 	// all elements with this class will be auto-added and prettified!
 	$('.prettify').prettify();
