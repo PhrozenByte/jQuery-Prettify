@@ -1,4 +1,4 @@
-jQuery-Prettify 1.3
+jQuery-Prettify 1.4
 ===================
 Use google-code-prettify to highlight sourecode with jQuery
 
@@ -30,7 +30,7 @@ jQuery-Prettify has a great method to make your sourcecode more readable by expa
 
 License & Copyright
 -------------------
-Copyright (C) 2012-2013  Daniel Rudolf <http://www.daniel-rudolf.de/>
+Copyright (C) 2012-2014  Daniel Rudolf <http://www.daniel-rudolf.de/>
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, version 3 of the License only.
 

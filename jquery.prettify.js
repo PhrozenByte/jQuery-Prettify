@@ -1,11 +1,11 @@
 /**
  * Prettify plugin for jQuery
- * Version 1.3 (build 2013-08-07)
+ * Version 1.4 (build 2014-04-19)
  * 
  * Prettify sourcecode using google-code-prettify
  * 
  * COPYRIGHT AND LICENSING:
- * 	Copyright (C) 2012-2013  Daniel Rudolf <http://www.daniel-rudolf.de/>
+ * 	Copyright (C) 2012-2014  Daniel Rudolf <http://www.daniel-rudolf.de/>
  * 	
  * 	This program is free software: you can redistribute it and/or modify
  * 	it under the terms of the GNU Lesser General Public License as
@@ -22,7 +22,7 @@
  * 	<http://www.gnu.org/licenses/>.
  * 
  * @author	Daniel Rudolf
- * @copyright	2012-2013 Daniel Rudolf
+ * @copyright	2012-2014 Daniel Rudolf
  * 		<http://www.daniel-rudolf.de/>
  * @license	GNU Lesser General Public License v3 only
  * 		<http://www.gnu.org/licenses/lgpl-3.0.html>
