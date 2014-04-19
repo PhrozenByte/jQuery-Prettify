@@ -270,9 +270,15 @@
 		/**
 		 * Let the box shrink to the normal page width
 		 * 
+		 * @param function	callback	To be called function when the animation completes
 		 * @return jQuery
 		 */
-		viewNormal: function() {
+		viewNormal: function(callback) {
+			if((callback !== undefined) && !$.isFunction(callback)) {
+				$.error('jQuery.prettify.viewNormal() expects parameter 1 to be a function, ' + typeof(callback) + ' given');
+				return this;
+			}
+			
 			return this.each(function() {
 				var $this = $(this);
 				
@@ -289,7 +295,7 @@
 					var codes = container.find('pre, code, xmp');
 					
 					// change and remember view
-					animateNormalViewChange(wrapper, container, codes);
+					animateNormalViewChange(wrapper, container, codes, callback);
 					container.data('view', 'normal');
 				}
 			});
@@ -298,9 +304,15 @@
 		/**
 		 * Let the box grow up to the width of the window
 		 * 
+		 * @param function	callback	To be called function when the animation completes
 		 * @return jQuery
 		 */
-		viewWindowWidth: function() {
+		viewWindowWidth: function(callback) {
+			if((callback !== undefined) && !$.isFunction(callback)) {
+				$.error('jQuery.prettify.viewWindowWidth() expects parameter 1 to be a function, ' + typeof(callback) + ' given');
+				return this;
+			}
+			
 			return this.each(function() {
 				var $this = $(this);
 				
@@ -317,7 +329,7 @@
 					var codes = container.find('pre, code, xmp');
 					
 					// change and remember view
-					animateWiderViewChange(wrapper, container, codes, '100%');
+					animateWiderViewChange(wrapper, container, codes, '100%', callback);
 					container.data('view', 'windowWidth');
 				}
 			});
@@ -326,9 +338,15 @@
 		/**
 		 * Let the box grow until no more line breaks are necessary
 		 * 
+		 * @param function	callback	To be called function when the animation completes
 		 * @return jQuery
 		 */
-		viewNoLineBreak: function() {
+		viewNoLineBreak: function(callback) {
+			if((callback !== undefined) && !$.isFunction(callback)) {
+				$.error('jQuery.prettify.viewNoLineBreak() expects parameter 1 to be a function, ' + typeof(callback) + ' given');
+				return this;
+			}
+			
 			return this.each(function() {
 				var $this = $(this);
 				
@@ -345,7 +363,7 @@
 					var codes = container.find('pre, code, xmp');
 					
 					// change and remember view
-					animateWiderViewChange(wrapper, container, codes, 'auto');
+					animateWiderViewChange(wrapper, container, codes, 'auto', callback);
 					container.data('view', 'noLineBreak');
 				}
 			});
@@ -450,8 +468,9 @@
 	 * @param jQuery	wrapper		The wrapper arount the prettify container
 	 * @param jQuery	container	The prettify container
 	 * @param jQuery	codes		The actual code element(s)
+	 * @param function	callback	To be called function when the animation completes
 	 */
-	var animateNormalViewChange = function(wrapper, container, codes) {
+	var animateNormalViewChange = function(wrapper, container, codes, callback) {
 		// determine the source width, height and margins of the container
 		var sourceWidth = container.width();			// actually only necessary when source view == noLineBreak
 		var sourceMarginLeft = codes.css('marginLeft');
@@ -496,6 +515,10 @@
 				// and remove the height of the wrapper
 				var wrapper = container.closest('.prettify-wrapper');
 				wrapper.css('height', 'auto');
+				
+				// call callback
+				if($.isFunction(callback))
+					$.proxy(callback, this)();
 			}
 		});
 	};
@@ -509,8 +532,9 @@
 	 * @param string	targetWidthType	The width the container should grow to.
 	 * 						100%: Grow to window boundaries
 	 * 						auto: Grow until no line breaks are necessary
+	 * @param function	callback	To be called function when the animation completes
 	 */
-	var animateWiderViewChange = function(wrapper, container, codes, targetWidth) {
+	var animateWiderViewChange = function(wrapper, container, codes, targetWidth, callback) {
 		// determine the source width, height, margins and left offset of the container
 		var sourceWidth = container.width();
 		var sourceHeight = container.height();
@@ -565,6 +589,10 @@
 				var container = $(this);
 				var wrapper = container.closest('.prettify-wrapper');
 				wrapper.css('height', container.height());
+				
+				// call callback
+				if($.isFunction(callback))
+					$.proxy(callback, this)();
 			}
 		});
 	};
