@@ -44,11 +44,11 @@
 		var method = arguments[0];
 		
 		// public method
-		if(methods[method]) {
+		if (methods[method]) {
 			return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
 			
 		// init() method
-		} else if(typeof(method) !== 'string') {
+		} else if (typeof(method) !== 'string') {
 			return methods.init.apply(this, arguments);
 			
 		// unknown method
@@ -76,40 +76,43 @@
 		 * @return jQuery
 		 */
 		init: function(options, callback) {
-			if(options === undefined)
+			if (options === undefined) {
 				options = {};
+			}
 			
 			// allow options to be the callback when only one parameter was passed
-			if($.isFunction(options) && (callback === undefined)) {
+			if ($.isFunction(options) && (callback === undefined)) {
 				callback = options;
 				options = {};
 			}
 
 			// validate options and callback
-			if(!$.isPlainObject(options)) {
+			if (!$.isPlainObject(options)) {
 				$.error('jQuery.prettify.init() expects parameter 1 to be a plain object, ' + typeof(options) + ' given');
 				return this;
 			}
-			if((callback !== undefined) && !$.isFunction(callback)) {
+			if ((callback !== undefined) && !$.isFunction(callback)) {
 				$.error('jQuery.prettify.init() expects parameter 2 to be a function, ' + typeof(options) + ' given');
 				return this;
 			}
 
 			// when callback parameter was ommited, try the callback option
-			if((callback === undefined))
+			if ((callback === undefined)) {
 				callback = ((options !== undefined) && $.isFunction(options.callback))
 					? options.callback
 					: null;
+			}
 
 			return this.each(function() {
 				var $this = $(this);
 				
 				// CSS class "linenums" forces linenums = true
-				if($this.hasClass('linenums'))
+				if ($this.hasClass('linenums')) {
 					options.linenums = true;
+				}
 					
 				// look for code element(s)
-				if($this.find('code, pre, xmp').length === 0) {
+				if ($this.find('code, pre, xmp').length === 0) {
 					$.error("Element " + $this.xpath() + "doesn't contain any element that could be prettified");
 					return true; // continue
 				}
@@ -132,11 +135,12 @@
 				);
 				
 				// validate data
-				if(!validate(data))
+				if (!validate(data)) {
 					return true; // continue;
+				}
 				
 				// can't prettify already prettified element
-				if((typeof(data.ready) === 'boolean') && data.ready) {
+				if ((typeof(data.ready) === 'boolean') && data.ready) {
 					return true; // continue
 				}
 				
@@ -146,15 +150,16 @@
 					
 					// get container
 					var container = getContainer($this);
-					if(container === false)
+					if (container === false) {
 						return true; // do nothing
+					}
 				
 					// We want the browser to change the width of the container automatically.
 					// Because the fixed width we've calculated is the same as 100%, we can
 					// change the width to the relative 100%. On window resizes the browser now
 					// updates the width on its own. Because the fixed height of the wrapper
 					// isn't updated we must do this on our own.
-					if(container.data('view') === 'windowWidth') {
+					if (container.data('view') === 'windowWidth') {
 						// set width to the relative 100%
 						container.css('width', '100%');
 						
@@ -188,7 +193,7 @@
 				$this.wrap('<div class="prettify-wrapper" />');
 				
 				// prettify the element automatically
-				if(data.auto) {
+				if (data.auto) {
 					$this.prettify('prettify');
 				}
 			});
@@ -223,7 +228,7 @@
 		 */
 		prettify: function() {
 			// prettify is not available
-			if(!window.prettyPrint) {
+			if (!window.prettyPrint) {
 				$.error("Can't prettify without google-code-prettify loaded");
 				return this;
 			}
@@ -235,13 +240,13 @@
 				var data = $this.data();
 				
 				// element wasn't registered yet
-				if((data === undefined) || (data.ready === undefined)) {
+				if ((data === undefined) || (data.ready === undefined)) {
 					$.error("Can't prettify unknown element " + $this.xpath() + '. Run $(…).prettify() first!');
 					return true; // continue
 				}
 				
 				// element was already prettified
-				if(data.ready) {
+				if (data.ready) {
 					$.error("You can't prettify element " + $this.xpath() + ' multiple times');
 					return true; // continue
 				}
@@ -256,12 +261,14 @@
 				$this.data(data);
 				
 				// hide progress bar
-				if(data.progress !== false)
+				if (data.progress !== false) {
 					hideProgressBar($(data.progress));
+				}
 				
 				// call callback
-				if($.isFunction(data.callback))
+				if ($.isFunction(data.callback)) {
 					$.proxy(data.callback, this)();
+				}
 				
 				// show prettified sourcecode
 				show($this);
@@ -275,7 +282,7 @@
 		 * @return jQuery
 		 */
 		viewNormal: function(callback) {
-			if((callback !== undefined) && !$.isFunction(callback)) {
+			if ((callback !== undefined) && !$.isFunction(callback)) {
 				$.error('jQuery.prettify.viewNormal() expects parameter 1 to be a function, ' + typeof(callback) + ' given');
 				return this;
 			}
@@ -285,12 +292,13 @@
 				
 				// get container
 				var container = getContainer($this, true);
-				if(container === false)
+				if (container === false) {
 					return true; // continue
+				}
 				
 				// get current view and change it only when necessary
 				var currentView = container.data('view');
-				if((currentView === undefined) || (currentView !== 'normal')) {
+				if ((currentView === undefined) || (currentView !== 'normal')) {
 					// get wrapper and actual code element(s)
 					var wrapper = container.closest('.prettify-wrapper');
 					var codes = container.find('pre, code, xmp');
@@ -303,8 +311,9 @@
 						container.removeClass('prettify-viewWindowWidth prettify-viewNoLineBreak');
 
 						// call callback
-						if($.isFunction(callback))
+						if ($.isFunction(callback)) {
 							$.proxy(callback, container)();
+						}
 					});
 				}
 			});
@@ -317,7 +326,7 @@
 		 * @return jQuery
 		 */
 		viewWindowWidth: function(callback) {
-			if((callback !== undefined) && !$.isFunction(callback)) {
+			if ((callback !== undefined) && !$.isFunction(callback)) {
 				$.error('jQuery.prettify.viewWindowWidth() expects parameter 1 to be a function, ' + typeof(callback) + ' given');
 				return this;
 			}
@@ -327,12 +336,13 @@
 				
 				// get container
 				var container = getContainer($this, true);
-				if(container === false)
+				if (container === false) {
 					return true; // continue
+				}
 				
 				// get current view and change it only when necessary
 				var currentView = container.data('view');
-				if((currentView === undefined) || (currentView !== 'windowWidth')) {
+				if ((currentView === undefined) || (currentView !== 'windowWidth')) {
 					// get wrapper and actual code element(s)
 					var wrapper = container.closest('.prettify-wrapper');
 					var codes = container.find('pre, code, xmp');
@@ -345,8 +355,9 @@
 						container.removeClass('prettify-viewNormal prettify-viewNoLineBreak');
 
 						// call callback
-						if($.isFunction(callback))
+						if ($.isFunction(callback)) {
 							$.proxy(callback, container)();
+						}
 					});
 				}
 			});
@@ -359,7 +370,7 @@
 		 * @return jQuery
 		 */
 		viewNoLineBreak: function(callback) {
-			if((callback !== undefined) && !$.isFunction(callback)) {
+			if ((callback !== undefined) && !$.isFunction(callback)) {
 				$.error('jQuery.prettify.viewNoLineBreak() expects parameter 1 to be a function, ' + typeof(callback) + ' given');
 				return this;
 			}
@@ -369,12 +380,13 @@
 				
 				// get container
 				var container = getContainer($this, true);
-				if(container === false)
+				if (container === false) {
 					return true; // continue
+				}
 				
 				// get current view and change it only when necessary
 				var currentView = container.data('view');
-				if((currentView === undefined) || (currentView !== 'noLineBreak')) {
+				if ((currentView === undefined) || (currentView !== 'noLineBreak')) {
 					// get wrapper and actual code element(s)
 					var wrapper = container.closest('.prettify-wrapper');
 					var codes = container.find('pre, code, xmp');
@@ -387,8 +399,9 @@
 						container.removeClass('prettify-viewNormal prettify-viewWindowWidth');
 
 						// call callback
-						if($.isFunction(callback))
+						if ($.isFunction(callback)) {
 							$.proxy(callback, container)();
+						}
 					});
 				}
 			});
@@ -426,8 +439,9 @@
 	var prettify = function(container, codes, data) {
 		// add prettyprint and, if enabled, linenums classes to code element(s)
 		codes.addClass('prettyprint');
-		if(data.linenums)
+		if (data.linenums) {
 			codes.addClass('linenums');
+		}
 			
 		// prettify code
 		prettyPrint();
@@ -437,15 +451,15 @@
 		
 		// add, if enabled, linenums class for styling purposes to the container and
 		// a line-count-specific class to the code element(s)
-		if(data.linenums) {
+		if (data.linenums) {
 			container.addClass('linenums');
 			codes.each(function() {
 				var code = $(this);
-				if(code.find('li').length >= 10000) {
+				if (code.find('li').length >= 10000) {
 					code.addClass('linenums-5');
-				} else if(code.find('li').length >= 1000) {
+				} else if (code.find('li').length >= 1000) {
 					code.addClass('linenums-4');
-				} else if(code.find('li').length >= 100) {
+				} else if (code.find('li').length >= 100) {
 					code.addClass('linenums-3');
 				}
 			});
@@ -468,7 +482,7 @@
 	 * @param jQuery	progress	progress element
 	 */
 	var showProgressBar = function(progress) {
-		if(progress !== false) {
+		if (progress !== false) {
 			progress.slideDown('fast');
 		}
 	};
@@ -479,7 +493,7 @@
 	 * @param jQuery	progress	progress element
 	 */
 	var hideProgressBar = function(progress) {
-		if(progress !== false) {
+		if (progress !== false) {
 			progress.slideUp('fast');
 		}
 	};
@@ -542,8 +556,9 @@
 				wrapper.css('height', 'auto');
 				
 				// call callback
-				if($.isFunction(callback))
+				if ($.isFunction(callback)) {
 					$.proxy(callback, this)();
+				}
 			}
 		});
 	};
@@ -616,8 +631,9 @@
 				wrapper.css('height', container.height());
 				
 				// call callback
-				if($.isFunction(callback))
+				if ($.isFunction(callback)) {
 					$.proxy(callback, this)();
+				}
 			}
 		});
 	};
@@ -633,25 +649,25 @@
 	 */
 	var validate = function(data) {
 		// option progress
-		if((typeof(data.progress) !== 'string') && ((typeof(data.progress) !== 'boolean') || (data.progress === true))) {
+		if ((typeof(data.progress) !== 'string') && ((typeof(data.progress) !== 'boolean') || (data.progress === true))) {
 			$.error('Option progress of jQuery.prettify.init() expects to be a string or false, ' + typeof(options) + ' given');
 			return false;
 		}
 		
 		// option linenums
-		if(typeof(data.linenums) !== 'boolean') {
+		if (typeof(data.linenums) !== 'boolean') {
 			$.error('Option linenums of jQuery.prettify.init() expects to be a boolean, ' + typeof(options) + ' given');
 			return false;
 		}
 		
 		// option auto
-		if(typeof(data.auto) !== 'boolean') {
+		if (typeof(data.auto) !== 'boolean') {
 			$.error('Option auto of jQuery.prettify.init() expects to be a boolean, ' + typeof(options) + ' given');
 			return false;
 		}
 		
 		// option callback
-		if(!$.isFunction(data.callback) && (data.callback !== null)) {
+		if (!$.isFunction(data.callback) && (data.callback !== null)) {
 			$.error('Option callback of jQuery.prettify.init() expects to be a function, ' + typeof(options) + ' given');
 			return false;
 		}
@@ -669,23 +685,23 @@
 	 */
 	var getContainer = function(element, ready) {
 		// selected element is already the container
-		if(element.hasClass('prettify')) {
+		if (element.hasClass('prettify')) {
 			var container = element;
 			
 		// selected element holds a reference to the container
 		} else {
 			// get container
 			var container = element.data('prettify');
-			if(container === undefined) {
+			if (container === undefined) {
 				$.error("Element " + element.xpath() + " doesn't reference a prettify container");
 				return false;
 			}
 		}
 		
 		// is the container ready?
-		if(typeof(ready) === 'boolean') {
+		if (typeof(ready) === 'boolean') {
 			var ready = container.data('ready');
-			if((typeof(ready) !== 'boolean') || !ready) {
+			if ((typeof(ready) !== 'boolean') || !ready) {
 				$.error("The prettify container " + container.xpath() + " isn't ready. Run $(…).prettify('prettify') first!");
 				return false;
 			}
