@@ -167,6 +167,7 @@
 				// prepare ready state, view (always starting in normal view)
 				// and the resize event function
 				$.extend(data, { ready: false, view: 'normal', resizeEvent: resizeEvent });
+				$this.addClass('prettify-viewNormal');
 				
 				// save dataset back to element
 				$this.data(data);
@@ -294,9 +295,17 @@
 					var wrapper = container.closest('.prettify-wrapper');
 					var codes = container.find('pre, code, xmp');
 					
-					// change and remember view
-					animateNormalViewChange(wrapper, container, codes, callback);
+					// change and remember view (data property + css class)
 					container.data('view', 'normal');
+					container.addClass('prettify-viewNormal');
+					animateNormalViewChange(wrapper, container, codes, function() {
+						// remove old view css classes
+						container.removeClass('prettify-viewWindowWidth prettify-viewNoLineBreak');
+
+						// call callback
+						if($.isFunction(callback))
+							$.proxy(callback, container)();
+					});
 				}
 			});
 		},
@@ -328,9 +337,17 @@
 					var wrapper = container.closest('.prettify-wrapper');
 					var codes = container.find('pre, code, xmp');
 					
-					// change and remember view
-					animateWiderViewChange(wrapper, container, codes, '100%', callback);
+					// change and remember view (data property + css class)
 					container.data('view', 'windowWidth');
+					container.addClass('prettify-viewWindowWidth');
+					animateWiderViewChange(wrapper, container, codes, '100%', function() {
+						// remove old view css classes
+						container.removeClass('prettify-viewNormal prettify-viewNoLineBreak');
+
+						// call callback
+						if($.isFunction(callback))
+							$.proxy(callback, container)();
+					});
 				}
 			});
 		},
@@ -362,9 +379,17 @@
 					var wrapper = container.closest('.prettify-wrapper');
 					var codes = container.find('pre, code, xmp');
 					
-					// change and remember view
-					animateWiderViewChange(wrapper, container, codes, 'auto', callback);
+					// change and remember view (data property + css class)
 					container.data('view', 'noLineBreak');
+					container.addClass('prettify-viewNoLineBreak');
+					animateWiderViewChange(wrapper, container, codes, 'auto', function() {
+						// remove old view css classes
+						container.removeClass('prettify-viewNormal prettify-viewWindowWidth');
+
+						// call callback
+						if($.isFunction(callback))
+							$.proxy(callback, container)();
+					});
 				}
 			});
 		}	
