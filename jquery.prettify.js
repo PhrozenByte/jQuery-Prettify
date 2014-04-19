@@ -153,17 +153,23 @@
 					if (container === false) {
 						return true; // do nothing
 					}
-				
-					// We want the browser to change the width of the container automatically.
-					// Because the fixed width we've calculated is the same as 100%, we can
-					// change the width to the relative 100%. On window resizes the browser now
-					// updates the width on its own. Because the fixed height of the wrapper
-					// isn't updated we must do this on our own.
+
+					// Window width view requires the browser to change the width of the container
+					// automatically to reflect window resizing. The fixed width we've calculated
+					// is the same as 100%, so we can simply change the width to the relative 100%.
 					if (container.data('view') === 'windowWidth') {
-						// set width to the relative 100%
 						container.css('width', '100%');
-						
-						// update wrapper height
+					}
+
+					// In contrast, when displaying the container without line breaks, the window
+					// could get larger than the space we've calculated. It's pretty simple to
+					// work around that: set the minimum width to the relative 100%.
+					if (container.data('view') === 'noLineBreak') {
+						container.css('minWidth', '100%');
+					}
+
+					// In both cases we must update the wrapper height...
+					if (container.data('view') !== 'normal') {
 						var wrapper = container.closest('.prettify-wrapper');
 						wrapper.css('height', container.height());
 					}
